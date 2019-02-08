@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<style>
+    .style {
+        border: 2px #000 solid;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    @media only screen and (min-width: 600px) {
+        #liste {
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        #liste {
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+    }
+</style>
+
+<body>
+    <div id="liste">
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            let alleRetter = [];
+            hentJson();
+            async function hentJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
+                console.log(jsonData);
+                alleRetter = await jsonData.json();
+                console.log(alleRetter);
+                visRet();
+            }
+
+            function visRet() {
+                let destination = document.querySelector("#liste");
+                alleRetter.forEach(Ret => {
+                    destination.innerHTML += `<div class="style">
+                  <h3>${Ret.kategori}</h3>
+                  <p>${Ret.navn}</p>
+                  <p>${Ret.pris}</p>
+                  <p>${Ret.kort}</p>
+                  <p>${Ret.lang}</p>
+                  <p>${Ret.oprindelse}</p>
+                <img src=imgs/large/${Ret.billede}.jpg>
+
+        </div>`;
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>
