@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<style>
+    .style {
+        border: 2px #000 solid;
+    }
+
+    @media only screen and (min-width: 600px);
+
+    #liste {
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+
+    @media only screen and (min-width: 800px);
+
+    #liste {
+        display: grid;
+        grid-template-columns: auto auto auto;
+    }
+</style>
+
+<body>
+    <div id="liste">
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            let alleDyr = [];
+            hentJson();
+            async function hentJson() {
+                //let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1eBNqPb_SgxmA2kVMKTKGLCg5qyrGd0HoXPzaYXe7qJA ");
+                let jsonData = await fetch("dyr.json");
+                console.log(jsonData);
+                alleDyr = await jsonData.json();
+                console.log(alleDyr);
+                visDyr();
+            }
+
+            function visDyr() {
+                let destination = document.querySelector("#liste");
+                alleDyr.forEach(dyr => {
+                    destination.innerHTML += `<div class="style"><h3>${dyr.navn}</h3> <p>${dyr.type}</p> <img src = ${dyr.billede}> <p>${dyr.levested}</p></div>`;
+                })
+            }
+        }
+    </script>
+</body>
+</html>

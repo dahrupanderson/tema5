@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<style>
+    .style {
+        border: 2px #000 solid;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    @media only screen and (min-width: 600px) {
+        #liste {
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        #liste {
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+    }
+</style>
+
+<body>
+    <div id="liste">
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            let allePersoner = [];
+            hentJson();
+            async function hentJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
+                console.log(jsonData);
+                allePersoner = await jsonData.json();
+                console.log(allePersoner);
+                visPerson();
+            }
+
+            function visPerson() {
+                let destination = document.querySelector("#liste");
+                allePersoner.forEach(person => {
+                    destination.innerHTML += `<div class="style">
+                  <h3>${person.navn}</h3>
+                  <p>${person.github}</p>
+                  <img src = ${person.billede}>
+                  <p>${person.alder}</p>
+                  <p>${person.køn}</p>
+                  <p>${person.email}</p>
+                <p>${person.hold}</p>
+                <p>${person.historie}</p>
+        </div>`;
+                })
+            }
+        }
+    </script>
+</body>
+</html>
