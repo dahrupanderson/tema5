@@ -36,8 +36,6 @@
     <div id="liste">
     </div>
     <script>
-        let personer = [];
-        let filter = "a";
         document.addEventListener("DOMContentLoaded", start);
 
         function start() {
@@ -54,9 +52,7 @@
             function visPerson() {
                 let destination = document.querySelector("#liste");
                 allePersoner.forEach(person => {
-                    if (person.hold == filter) {
-
-                        destination.innerHTML += `<div class="style">
+                    destination.innerHTML += `<div class="style">
                   <h3>${person.navn}</h3>
                   <p>${person.github}</p>
                   <img src = ${person.billede}>
@@ -66,13 +62,9 @@
                 <p>${person.hold}</p>
                 <p>${person.historie}</p>
         </div>`;
-                    } //slut if
-                }) // slut forEacjh
-
-
-            } //slut visPerson
-        } // slut  Start
+                })
+            }
+        }
     </script>
 </body>
-
 </html>

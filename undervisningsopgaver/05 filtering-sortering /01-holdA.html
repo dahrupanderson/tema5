@@ -17,6 +17,19 @@
         width: 100%;
     }
 
+    .menu {
+        text-align: center;
+    }
+
+    .h1 {
+        text-align: center;
+    }
+
+
+    .valgt {
+        background-color: red;
+    }
+
     @media only screen and (min-width: 600px) {
         #liste {
             display: grid;
@@ -30,14 +43,21 @@
             grid-template-columns: auto auto auto;
         }
     }
+
 </style>
 
 <body>
+    <h1>Alle</h1>
+    <div class="menu">
+        <button class="filter valgt" data-hold="alle">Alle</button>
+        <button class="filter " data-hold="a">Hold A</button>
+        <button class="filter" data-hold="b">Hold B</button>
+    </div>
     <div id="liste">
     </div>
     <script>
         let personer = [];
-        let filter = "a";
+        let filter = "alle";
         document.addEventListener("DOMContentLoaded", start);
 
         function start() {
@@ -53,8 +73,9 @@
 
             function visPerson() {
                 let destination = document.querySelector("#liste");
+                destination.innerHTML = "";
                 allePersoner.forEach(person => {
-                    if (person.hold == filter) {
+                    if (filter == "alle" || filter == person.hold) {
 
                         destination.innerHTML += `<div class="style">
                   <h3>${person.navn}</h3>
@@ -66,12 +87,29 @@
                 <p>${person.hold}</p>
                 <p>${person.historie}</p>
         </div>`;
-                    } //slut if
+                    } //slut if 
                 }) // slut forEacjh
 
 
-            } //slut visPerson
+            } //slut visPerson 
+            hentJson();
+            document.querySelectorAll(".filter").forEach(but => {
+                but.addEventListener("click", filtrering);
+            });
+
+            function filtrering() {
+                document.querySelectorAll(".filter").forEach(but => {
+                    but.classList.remove("valgt");
+                });
+                this.classList.add("valgt");
+                document.querySelector("h1").textContent = this.textContent;
+                filter = this.getAttribute("data-hold");
+                console.log(filter);
+                visPerson;
+
+            }
         } // slut  Start
+
     </script>
 </body>
 
