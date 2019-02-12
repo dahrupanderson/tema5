@@ -11,23 +11,22 @@
 
 <style>
     body {
-        background-color: lightgray;
-        font-family: 'arial', sans-serif;
+        background-color: #FFFAFA;
+        font-family: 'Pontano Sans', sans-serif;
     }
 
     header {
-        background-color: tomato;
-        padding-top: 6vw;
-        padding-bottom: 6vw;
+        background-color: #AC3535;
+        padding-top: 8vw;
+        padding-bottom: 8vw;
         width: 100%;
         margin: -10;
-        background-image: url(imgs/large/hammer-segl.jpg);
     }
 
     h1 {
         text-align: center;
         text-transform: uppercase;
-        font-size: 5rem;
+        font-size: 4rem;
     }
 
     h2 {
@@ -55,7 +54,7 @@
     }
 
     .img-container {
-        background-color: beige;
+        background-color: antiquewhite;
         height: 50vw;
         overflow: hidden;
     }
@@ -102,7 +101,6 @@
             height: 15vw;
         }
     }
-
 </style>
 
 
@@ -111,7 +109,7 @@
         <h1>Bistro Babushka</h1>
     </header>
 
-    <h2>Alle Retter</h2>
+    <h2>Alle reter</h2>
     <div class="menu">
         <button class="filter valgt" data-kategori="alle">Alle</button>
         <button class="filter" data-kategori="forretter">Forretter</button>
@@ -126,7 +124,7 @@
 
 
     <script>
-        let alleRetter = [];
+        let alleReter = [];
         let filter = "alle";
         document.addEventListener("DOMContentLoaded", start);
 
@@ -134,14 +132,14 @@
             hentJson();
             async function hentJson() {
                 let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
-                alleRetter = await jsonData.json();
+                alleReter = await jsonData.json();
                 visRet();
             }
 
             function visRet() {
                 let destination = document.querySelector("#liste");
                 destination.innerHTML = "";
-                alleRetter.forEach(ret => {
+                alleReter.forEach(ret => {
                     if (filter == "alle" || filter == ret.kategori) {
                         destination.innerHTML += `
                         <div class="style">
@@ -170,7 +168,6 @@
                 visRet();
             }
         }
-
     </script>
 </body>
 
