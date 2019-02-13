@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
+
+</head>
+
+<style>
+    body {
+        background-color: lightgray;
+        font-family: 'arial', sans-serif;
+
+    }
+
+    header {
+        background-image: url(imgs/large/hammer-segl.jpg);
+        padding-top: 6vw;
+        padding-bottom: 6vw;
+        width: 100%;
+        margin: -10;
+        position: relative;
+        background-size: 100%;
+
+
+    }
+
+    h1 {
+        color: white;
+        font-family: 'Russo One', sans-serif;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 5rem;
+    }
+
+    h2 {
+        text-align: center;
+    }
+
+    .menu {
+        text-align: center;
+    }
+
+    .style {
+        background-color: #fff;
+        margin: 7px;
+        text-align: center;
+    }
+
+    #navn {
+        height: 7vw;
+        margin-top: 1vw;
+        margin-bottom: 0;
+    }
+
+    p {
+        margin: 2vw;
+    }
+
+    .img-container {
+        background-color: beige;
+        height: 50vw;
+        overflow: hidden;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    @media only screen and (min-width: 600px) {
+        font-size: 6rem;
+
+        #liste {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .img-container {
+            height: 30vw;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        h1 {
+            font-size: 4rem;
+        }
+
+        #liste {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .img-container {
+            height: 19vw;
+        }
+    }
+
+    @media only screen and (min-width: 1300px) {
+        body {
+            margin-left: 6vw;
+            margin-right: 6vw;
+        }
+
+        .img-container {
+            height: 15vw;
+        }
+    }
+</style>
+
+
+<body>
+    <header>
+        <h1>Bistro Babushka</h1>
+    </header>
+
+    <h2>Alle Retter</h2>
+    <div class="menu">
+        <button class="filter valgt" data-kategori="alle">Alle</button>
+        <button class="filter" data-kategori="forretter">Forretter</button>
+        <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+        <button class="filter" data-kategori="desserter">Desserter</button>
+        <button class="filter" data-kategori="sideretter">Sideretter</button>
+        <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
+    </div>
+
+    <div id="liste">
+    </div>
+
+
+    <script>
+        let alleRetter = [];
+        let filter = "alle";
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            hentJson();
+            async function hentJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
+                alleRetter = await jsonData.json();
+                visRet();
+            } //async slut
+
+            function visRet() {
+                let destination = document.querySelector("#liste");
+                destination.innerHTML = "";
+                alleRetter.forEach(ret => {
+
+                    if (filter == "alle" || filter == ret.kategori) {
+
+                        let template = `
+
+                        <div class="style">
+                            <div class="img-container">
+                                <img src = imgs/large/${ret.billede}.jpg>
+                            </div>
+                            <h3 id="navn">${ret.navn}</h3>
+                            <p>${ret.kort}</p>
+                            <p>Pris: ${ret.pris},-</p>
+                            <p>${ret.kategori}</p>
+                        </div>`;
+                        destination.insertAdjacentHTML("beforeend", template);
+                        destination.lastElementChild.addEventListener("click", () => {
+                            location.href = "baboushka-singleview.html?id=" + ret.id;
+                        }); // eventlistner slut
+                    } //if
+                }) //slut foreach
+            } // slut visret
+            hentJson();
+            document.querySelectorAll(".filter").forEach(but => {
+                but.addEventListener("click", filtrering);
+            });
+
+            function filtrering() {
+                document.querySelectorAll(".filter").forEach(but => {
+                    but.classList.remove("valgt");
+                });
+                this.classList.add("valgt");
+                document.querySelector("h2").textContent = this.textContent;
+                filter = this.getAttribute("data-kategori");
+                visRet;
+            } //slut filtering
+
+
+        } //slut start
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+
+<style>
+    *,
+    body* {
+        box-sizing: border-box;
+    }
+
+    #single {
+        background-color: hsla(0, 15%, 40%, 30%);
+
+
+    }
+
+    #indhold {
+        min-height: 50vh;
+        background-color: white;
+        width: 70vw;
+        margin: 4rem auto;
+    }
+
+    #tilbage {
+        font-size: 2rem;
+        padding: 1rem 2rem;
+    }
+
+
+
+
+
+    .style {
+        border: 2px #000 solid;
+    }
+
+    img {
+        width: 100%;
+    }
+
+
+    .valgt {
+        background-color: red;
+    }
+
+    button {
+        cursor: pointer;
+    }
+
+    @media only screen and (min-width: 600px) {
+        #liste {
+            display: grid;
+            grid-template-columns: auto auto;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        #liste {
+            display: grid;
+            grid-template-columns: auto auto auto;
+        }
+    }
+</style>
+
+<body>
+    <main id="single">
+        <div id="tilbage">
+            <button>X</button>
+        </div>
+        <section id="indhold"></section>
+    </main>
+
+    <script>
+        let urlParams = new URLSearchParams(window.location.search)
+        let github = urlParams.get("github");
+        let personer = [];
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            let allePersoner = [];
+            hentJson();
+            async function hentJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1OLlD_GRoz71piHvnW306omRAyHS7vtLOILQt-K0YF_c");
+                console.log(jsonData);
+                allePersoner = await jsonData.json();
+                console.log(allePersoner);
+                visSingle();
+            }
+
+            function visSingle() {
+                let destination = document.querySelector("#indhold");
+                destination.innerHTML = "";
+                allePersoner.forEach(person => {
+                    if (github == person.github) {
+                        let template = `
+                  <article class="person">
+                             <h2>${person.navn}</h2>
+                             <img class="billede" src="${person.billede}" alt="${person.navn}">
+                            <p>Hold:${person.hold}, Alder:${person.alder}</p>
+                            <h3>${person.navn}'s historie</h3>
+                             <p>${person.historie}</p>
+                             </article>
+                           `;
+                        destination.insertAdjacentHTML("beforeend", template);
+
+                    } //slut if
+                }) // slut forEacjh
+
+
+            } //slut visPerson
+            hentJson();
+        };
+
+        // slut  Start
+        document.querySelector("#tilbage").addEventListener("#click", () =>
+            location.href = "05-kald.html");
+    </script>
+</body>
+
+</html>

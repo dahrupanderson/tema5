@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+    <link href="http://fonts.googleapis.com/css?family=Pontano+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Russo+One" rel="stylesheet">
+</head>
+
+<style>
+    body {
+        background-repeat: no-repeat;
+        box-sizing: :border-box;
+    }
+
+    #single {
+
+        background-color: hsla(0, 15%, 40%, 30%);
+
+    }
+
+    #tilbage {
+        font-size: 2rem;
+        padding: 1rem 2rem;
+    }
+
+    #indhold {
+        min-height: 50vh;
+        background-color: white;
+        width: 70vw;
+        margin: 4rem auto;
+        background-repeat: no-repeat;
+    }
+
+    h1 {
+
+        text-align: center;
+    }
+
+    .style {
+        border: 2px grey solid;
+    }
+
+    img {
+        width: 100%;
+
+    }
+
+    @media only screen and (min-width: 600px) {
+        font-size: 6rem;
+
+        #liste {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .img-container {
+            height: 30vw;
+        }
+    }
+
+    @media only screen and (min-width: 800px) {
+        h1 {
+            font-size: 4rem;
+        }
+
+        #liste {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .img-container {
+            height: 19vw;
+        }
+    }
+
+    @media only screen and (min-width: 1300px) {
+        body {
+            margin-left: 6vw;
+            margin-right: 6vw;
+        }
+
+        .img-container {
+            height: 15vw;
+        }
+    }
+</style>
+
+
+<body>
+
+    <div id="single">
+        <div id="tilbage">
+            <button>
+                << </button> </div> <div id="indhold">
+        </div>
+    </div>
+
+
+    <script>
+        let urlParams = new URLSearchParams(window.location.search)
+        let id = urlParams.get("id");
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        function start() {
+            hentJson();
+            async function hentJson() {
+                let jsonData = await fetch("https://mandalskeawebspace.dk/claude_php/clean_up_spreadsheet.php?id=1jxxxFoWBuMJ1qhQ9BQIAyKHmP38XtAF9_sQr0xo5JLo");
+                alleRetter = await jsonData.json();
+                console.log(start);
+                visRet();
+            }
+
+            function visRet() {
+                let destination = document.querySelector("#indhold");
+                alleRetter.forEach(ret => {
+                    if (id == ret.id) {
+                        let template = `
+                        <div class="style">
+                            <div class="img-container">
+                                <img src = imgs/large/${ret.billede}.jpg>
+                            </div>
+                            <h3 id="navn">${ret.navn}</h3>
+                            <p>${ret.kort}</p>
+                            <p>Pris: ${ret.pris},-</p>
+                            <p>${ret.kategori}</p>
+                        </div>`;
+                        destination.insertAdjacentHTML("beforeend", template);
+                        console.log(visRet)
+
+                    } //if slut
+                }) //slut forEach
+            }
+            hentJson();
+            document.querySelector("#tilbage").addEventListener("click", () => {
+                location.href = "babushka_index.html";
+            });
+
+
+            function visSingle(ret) {
+                document.querySelector("#indhold").innerHTML = `
+                       <article class="ret">
+                       <h2>${ret.navn}</h2>
+                    <img class="billede" src="${ret.billede}" alt=${ret.navn}">
+                    <p>${ret.lang}</p>
+                    </article>`;
+
+                document.querySelector("#single").style.display = "block";
+                document.querySelector("#single #tilbage").addEventListener("click", close);
+            } //visSingle slut
+
+            function close() {
+                document.querySelector("#single").style.display = "none";
+            }
+
+
+
+        } //slut start
+    </script>
+</body>
+
+</html>
