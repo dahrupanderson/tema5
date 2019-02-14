@@ -24,7 +24,8 @@
         position: fixed;
         background-color: hsla(0, 15%, 40%, 30%);
         display: none;
-        overflow: scroll;
+        position: absolute;
+
     }
 
     #luk button {
@@ -132,7 +133,6 @@
             height: 15vw;
         }
     }
-
 </style>
 
 
@@ -154,7 +154,6 @@
         <button class="filter" data-kategori="forretter">Forretter</button>
         <button class="filter" data-kategori="hovedretter">Hovedretter</button>
         <button class="filter" data-kategori="desserter">Desserter</button>
-        <button class="filter" data-kategori="sideorders">Sideorders</button>
         <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
     </div>
 
@@ -193,6 +192,18 @@
                         destination.insertAdjacentHTML("beforeend", template);
                         destination.lastElementChild.addEventListener("click", visSingle);
 
+                        function visSingle() {
+                            document.querySelector("#indhold").innerHTML = `
+                       <article class="ret">
+                       <h2>${ret.navn}</h2>
+                    <img class="billede" src=imgs/small/${ret.billede}-sm.jpg alt=${ret.navn}">
+                    <p>${ret.lang}</p>
+                    </article>`;
+
+                            document.querySelector("#popup").style.display = "block";
+                            document.querySelector("#popup #luk").addEventListener("click", close);
+                        } //visSingle slut
+
 
                     } //if slut
                 }) //slut forEach
@@ -213,17 +224,6 @@
                     visRet();
                 } //filtering slut
             } //slut visRet
-            function visSingle(ret) {
-                document.querySelector("#indhold").innerHTML = `
-                       <article class="ret">
-                       <h2>${ret.navn}</h2>
-                    <img class="billede" src="${ret.billede}" alt=${ret.navn}">
-                    <p>${ret.lang}</p>
-                    </article>`;
-
-                document.querySelector("#popup").style.display = "block";
-                document.querySelector("#popup #luk").addEventListener("click", close);
-            } //visSingle slut
 
             function close() {
                 document.querySelector("#popup").style.display = "none";
@@ -232,7 +232,6 @@
 
 
         } //slut start
-
     </script>
 </body>
 
